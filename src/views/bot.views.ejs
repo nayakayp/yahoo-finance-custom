@@ -1,0 +1,91 @@
+<section class="mt-5">
+  <form
+    action="/"
+    method="post"
+    class="row g-3 d-flex flex-column justify-content-center align-items-center"
+  >
+    <div class="col-auto">
+      <label for="inputPassword2">Company Code:</label>
+      <input
+        name="companyCode"
+        type="text"
+        class="form-control"
+        id="inputPassword2"
+        placeholder="Input here..."
+      />
+    </div>
+    <div class="col-auto">
+      <label for="inputPassword2">Date (YYYY.MM.DD):</label>
+      <input
+        name="date"
+        type="text"
+        class="form-control"
+        id="inputPassword2"
+        placeholder="YYYY.MM.DD"
+      />
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary w-100">Get Data</button>
+    </div>
+  </form>
+</section>
+<%if (after !== undefined){%>
+<h1>Input date: <%=targetDate%></h1>
+<section>
+  <h3 class="mt-5 text-success">After 5 Days</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Dates</th>
+        <th scope="col">Open</th>
+        <th scope="col">High</th>
+        <th scope="col">Low</th>
+        <th scope="col">Close</th>
+        <th scope="col">Adj Close</th>
+        <th scope="col">Volume</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%after.forEach((data)=>{%>
+      <tr>
+        <td><%=data.date%></td>
+        <td><div class="badge bg-primary"><%=data.open%></div></td>
+        <td><%=data.high%></td>
+        <td><%=data.low%></td>
+        <td><%=data.close%></td>
+        <td><div class="badge bg-primary"><%=data.adjClose%></div></td>
+        <td><%=data.volume%></td>
+      </tr>
+      <%})%>
+    </tbody>
+  </table>
+
+  <h3 class="mt-5 text-success">Before 5 Days</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Dates</th>
+        <th scope="col">Open</th>
+        <th scope="col">High</th>
+        <th scope="col">Low</th>
+        <th scope="col">Close</th>
+        <th scope="col">Adj Close</th>
+        <th scope="col">Volume</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%before.forEach((data)=>{%>
+      <tr>
+        <td><%=data.date%></td>
+        <td><div class="badge bg-primary"><%=data.open%></div></td>
+        <td><%=data.high%></td>
+        <td><%=data.low%></td>
+        <td><%=data.close%></td>
+        <td><div class="badge bg-primary"><%=data.adjClose%></div></td>
+        <td><%=data.volume%></td>
+      </tr>
+      <%})%>
+    </tbody>
+  </table>
+</section>
+<%}%>
