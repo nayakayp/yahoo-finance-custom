@@ -1,4 +1,4 @@
-<section class="mt-5">
+<section class="mt-3">
   <form
     action="/"
     method="post"
@@ -29,63 +29,174 @@
     </div>
   </form>
 </section>
-<%if (after !== undefined){%>
-<h1>Input date: <%=targetDate%></h1>
-<section>
-  <h3 class="mt-5 text-success">After 5 Days</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Dates</th>
-        <th scope="col">Open</th>
-        <th scope="col">High</th>
-        <th scope="col">Low</th>
-        <th scope="col">Close</th>
-        <th scope="col">Adj Close</th>
-        <th scope="col">Volume</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%after.forEach((data)=>{%>
-      <tr>
-        <td><%=data.date%></td>
-        <td><div class="badge bg-primary"><%=data.open%></div></td>
-        <td><%=data.high%></td>
-        <td><%=data.low%></td>
-        <td><%=data.close%></td>
-        <td><div class="badge bg-primary"><%=data.adjClose%></div></td>
-        <td><%=data.volume%></td>
-      </tr>
-      <%})%>
-    </tbody>
-  </table>
+<%if (RITafter !== undefined){%>
+<div class="info-input my-2">
+  <h5 class="text-center">Input date: <%=targetDate%></h2>
+    <h5 class="text-center">Company: <%=companyCode%></h2>
+</div>
+<section class="d-flex justify-content-evenly">
+  <div class="rit-wrapper p-2 d-flex justify-content-evenly">
+    <div class="after p-4 rounded-3 bg-light me-3">
+      <h3 class="text-success">(RIT) After <%=differDay%> Days</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Dates</th>
+            <!-- <th scope="col">Open</th>
+            <th scope="col">High</th>
+            <th scope="col">Low</th>
+            <th scope="col">Close</th> -->
+            <th scope="col">Adj Close</th>
+            <!-- <th scope="col">Volume</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <%RITafter.forEach((data,index)=>{%> <%if(index==0){%>
+          <tr class="">
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></div></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><div class=""><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}else{%>
+          <tr>
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></div></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}%> <%})%>
+        </tbody>
+      </table>
+    </div>
+    <div class="before p-4 rounded-3 bg-light">
+      <h3 class="text-success">(RIT) Before <%=differDay%> Days</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Dates</th>
+            <!-- <th scope="col">Open</th>
+            <th scope="col">High</th>
+            <th scope="col">Low</th>
+            <th scope="col">Close</th> -->
+            <th scope="col">Adj Close</th>
+            <!-- <th scope="col">Volume</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <%RITbefore.forEach((data,index)=>{%> <%if(index==RITbefore.length-1){%>
+          <tr class="">
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><div class=""><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}else{%>
+          <tr>
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></div></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}%> <%})%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
 
-  <h3 class="mt-5 text-success">Before 5 Days</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Dates</th>
-        <th scope="col">Open</th>
-        <th scope="col">High</th>
-        <th scope="col">Low</th>
-        <th scope="col">Close</th>
-        <th scope="col">Adj Close</th>
-        <th scope="col">Volume</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%before.forEach((data)=>{%>
-      <tr>
-        <td><%=data.date%></td>
-        <td><div class="badge bg-primary"><%=data.open%></div></td>
-        <td><%=data.high%></td>
-        <td><%=data.low%></td>
-        <td><%=data.close%></td>
-        <td><div class="badge bg-primary"><%=data.adjClose%></div></td>
-        <td><%=data.volume%></td>
-      </tr>
-      <%})%>
-    </tbody>
-  </table>
+  
+  <div class="ihgs-wrapper d-flex p-2 justify-content-evenly">
+    <div class="after p-4 rounded-3 bg-light me-3">
+      <h3 class="text-success">(IHGS) After <%=differDay%> Days</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Dates</th>
+            <!-- <th scope="col">Open</th>
+            <th scope="col">High</th>
+            <th scope="col">Low</th>
+            <th scope="col">Close</th> -->
+            <th scope="col">Adj Close</th>
+            <!-- <th scope="col">Volume</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <%IHGSafter.forEach((data,index)=>{%> <%if(index==0){%>
+          <tr class="">
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></div></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><div class=""><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}else{%>
+          <tr>
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></div></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}%> <%})%>
+        </tbody>
+      </table>
+    </div>
+    <div class="before p-4 rounded-3 bg-light">
+      <h3 class="text-success">(IHGS) Before <%=differDay%> Days</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Dates</th>
+            <!-- <th scope="col">Open</th>
+            <th scope="col">High</th>
+            <th scope="col">Low</th>
+            <th scope="col">Close</th> -->
+            <th scope="col">Adj Close</th>
+            <!-- <th scope="col">Volume</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <%IHGSbefore.forEach((data,index)=>{%> <%if(index==IHGSbefore.length-1){%>
+          <tr class="">
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><div class=""><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}else{%>
+          <tr>
+            <td><%=data.date%></td>
+            <!-- <td><%=data.open%></div></td>
+            <td><%=data.high%></td>
+            <td><%=data.low%></td>
+            <td><%=data.close%></td> -->
+            <td><%=data.adjClose%></div></td>
+            <!-- <td><%=data.volume%></td> -->
+          </tr>
+          <%}%> <%})%>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>
 <%}%>
