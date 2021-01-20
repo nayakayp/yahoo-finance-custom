@@ -1,0 +1,66 @@
+<section class="mt-3">
+  <h1 class="text-center">IDX Scraper</h1>
+  <form
+    action="/idx"
+    method="post"
+    class="row g-3 d-flex flex-column justify-content-center align-items-center"
+  >
+    <div class="col-auto">
+      <label for="inputPassword2">Company Code:</label>
+      <input
+        name="companyCode"
+        type="text"
+        class="form-control"
+        id="inputPassword2"
+        placeholder="Input here..."
+        required
+      />
+    </div>
+    <div class="col-auto">
+      <label for="inputPassword2">Date (YYYYMMDD):</label>
+      <input
+        name="date"
+        type="text"
+        class="form-control"
+        id="inputPassword2"
+        placeholder="YYYY.MM.DD"
+        required
+      />
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary w-100">Get Data</button>
+    </div>
+  </form>
+</section>
+<%if(datas !==undefined){%>
+  <div class="info-input my-2">
+    <h5 class="text-center">Input date: <%=targetDate%></h2>
+    <h5 class="text-center">5 Days After: <%=afterDate%></h2>
+    <h5 class="text-center">5 Days Before: <%=beforeDate%></h2>
+    <h5 class="text-center">Company: <%=companyCode%></h2>
+  </div>
+<section class="d-flex">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">StockCode</th>
+        <th scope="col">StockName</th>
+        <th scope="col">Bid</th>
+        <th scope="col">Offer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%for(let i=0;i< datas.length;i++){%>
+      <tr>
+        <td><%=datas[i].Date%></td>
+        <td><%=datas[i].StockCode%></td>
+        <td><%=datas[i].StockName%></td>
+        <td><%=datas[i].Bid%></td>
+        <td><%=datas[i].Offer%></td>
+      </tr>
+      <%}%>
+    </tbody>
+  </table>
+</section>
+<%}%>

@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const fetch = require("node-fetch");
 const moment = require("moment");
 
 exports.home_view = (req, res) => {
@@ -161,6 +162,69 @@ exports.historical_data_web = async (req, res) => {
   });
 };
 
-exports.historical_data_excel = (req, res) => {
-  res.send("Data web");
+exports.idx_view = (req, res) => {
+  res.render("idx.views.ejs", { datas: undefined });
+};
+exports.bid_offer_idx = (req, res) => {
+  let companyCode = req.body.companyCode;
+  let targetDate = req.body.date;
+  let differDay = 5;
+
+  let afterDate = normalizeDate(targetDate, differDay - 1);
+  let beforeDate = normalizeDate(targetDate, -differDay);
+
+  let linkAfter = `https://www.idx.co.id/umbraco/Surface/TradingSummary/GetStockSummary?date=${afterDate}`;
+  let linkBefore = `https://www.idx.co.id/umbraco/Surface/TradingSummary/GetStockSummary?date=${beforeDate}`;
+
+  let links = [linkAfter, linkBefore];
+  let datas = [];
+
+  links.forEach(async (link, index) => {
+    const recordTotal = await fetch(link)
+      .then((res) => res.json())
+      .then((responseJSON) => {
+        return responseJSON.recordsTotal;
+      });
+
+    const recordData = await fetch(`${link}&start=1&length=${recordTotal}`)
+      .then((res) => res.json())
+      .then((responseJSON) => {
+        return responseJSON.data;
+      });
+
+    if (recordTotal == 0) {
+      datas.push([]);
+    }
+    recordData.forEach((data) => {
+      if (Object.values(data).indexOf(companyCode) > -1) {
+        datas.push({
+          Date: data.Date,
+          StockCode: data.StockCode,
+          StockName: data.StockName,
+          Bid: data.Bid,
+          Offer: data.Offer,
+        });
+        console.log(data);
+        if (index === 1) {
+          setTimeout(function () {
+            res.render("idx.views.ejs", {
+              datas,
+              targetDate,
+              companyCode,
+              afterDate,
+              beforeDate,
+            });
+          }, 2000);
+        }
+      }
+    });
+  });
+
+  function normalizeDate(date, days) {
+    var new_date = moment(date, "YYYY.MM.DD").add(days, "days");
+    var day = new_date.format("DD");
+    var month = new_date.format("MM");
+    var year = new_date.format("YYYY");
+    return year + "" + month + "" + day;
+  }
 };
