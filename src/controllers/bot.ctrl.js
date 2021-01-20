@@ -165,60 +165,60 @@ exports.historical_data_web = async (req, res) => {
 exports.idx_view = (req, res) => {
   res.render("idx.views.ejs", { datas: undefined });
 };
-exports.bid_offer_idx = (req, res) => {
+exports.bid_offer_idx = async (req, res) => {
   let companyCode = req.body.companyCode;
   let targetDate = req.body.date;
-  let differDay = 5;
+  let maxDay = 10;
+  let datas = [
+    { name: "After", data: [] },
+    { name: "Before", data: [] },
+  ];
 
-  let afterDate = normalizeDate(targetDate, differDay - 1);
-  let beforeDate = normalizeDate(targetDate, -differDay);
-
-  let linkAfter = `https://www.idx.co.id/umbraco/Surface/TradingSummary/GetStockSummary?date=${afterDate}`;
-  let linkBefore = `https://www.idx.co.id/umbraco/Surface/TradingSummary/GetStockSummary?date=${beforeDate}`;
-
-  let links = [linkAfter, linkBefore];
-  let datas = [];
-
-  links.forEach(async (link, index) => {
-    const recordTotal = await fetch(link)
-      .then((res) => res.json())
-      .then((responseJSON) => {
-        return responseJSON.recordsTotal;
-      });
-
-    const recordData = await fetch(`${link}&start=1&length=${recordTotal}`)
-      .then((res) => res.json())
-      .then((responseJSON) => {
-        return responseJSON.data;
-      });
-
-    if (recordTotal == 0) {
-      datas.push([]);
-    }
-    recordData.forEach((data) => {
-      if (Object.values(data).indexOf(companyCode) > -1) {
-        datas.push({
-          Date: data.Date,
-          StockCode: data.StockCode,
-          StockName: data.StockName,
-          Bid: data.Bid,
-          Offer: data.Offer,
-        });
-        console.log(data);
-        if (index === 1) {
-          setTimeout(function () {
-            res.render("idx.views.ejs", {
-              datas,
-              targetDate,
-              companyCode,
-              afterDate,
-              beforeDate,
-            });
-          }, 2000);
-        }
+  for (j = 0; j < 2; j++) {
+    for (let i = 0; i < maxDay; i++) {
+      let date;
+      if (j == 0) {
+        date = normalizeDate(targetDate, i);
+      } else if (j == 1) {
+        date = normalizeDate(targetDate, -i);
       }
-    });
-  });
+      let link = `https://www.idx.co.id/umbraco/Surface/TradingSummary/GetStockSummary?date=${date}`;
+
+      const recordTotal = await fetch(link)
+        .then((res) => res.json())
+        .then((responseJSON) => {
+          return responseJSON.recordsTotal;
+        });
+
+      if (recordTotal > 0) {
+        const recordData = await fetch(`${link}&start=1&length=${recordTotal}`)
+          .then((res) => res.json())
+          .then((responseJSON) => {
+            return responseJSON.data;
+          });
+        // console.log(recordData.length);
+        const finalData = await recordData.forEach((data) => {
+          if (Object.values(data).indexOf(companyCode) > -1) {
+            datas[j]["data"].push({
+              Date: data.Date,
+              StockCode: data.StockCode,
+              StockName: data.StockName,
+              Bid: data.Bid,
+              Offer: data.Offer,
+            });
+          }
+        });
+      }
+    }
+    if (j == 1) {
+      res.render("idx.views.ejs", {
+        datas,
+        targetDate,
+        companyCode,
+      });
+      // console.log(datas);
+    }
+  }
 
   function normalizeDate(date, days) {
     var new_date = moment(date, "YYYY.MM.DD").add(days, "days");
