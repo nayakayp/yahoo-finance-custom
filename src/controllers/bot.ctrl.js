@@ -165,6 +165,7 @@ exports.historical_data_web = async (req, res) => {
 exports.idx_view = (req, res) => {
   res.render("idx.views.ejs", { datas: undefined });
 };
+
 exports.bid_offer_idx = async (req, res) => {
   let companyCode = req.body.companyCode;
   let targetDate = req.body.date;
@@ -215,6 +216,7 @@ exports.bid_offer_idx = async (req, res) => {
         datas,
         targetDate,
         companyCode,
+        maxDay,
       });
       // console.log(datas);
     }

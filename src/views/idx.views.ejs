@@ -37,7 +37,9 @@
     <h5 class="text-center">Input date: <%=targetDate%></h2>
     <h5 class="text-center">Company: <%=companyCode%></h2>
   </div>
-<section class="d-flex">
+  <%datas.forEach((dataArray)=>{%>
+  <section class="bg-info p-2 my-2">
+  <h3 class="text-success"><%=dataArray.name%> <%=maxDay%></h3>
   <table class="table">
     <thead>
       <tr>
@@ -47,21 +49,19 @@
       </tr>
     </thead>
     <tbody>
-      <%datas.forEach((dataArray)=>{%>
-        <h3>Hei</h3>
       <%dataArray.data.forEach((data)=>{%>
           <tr>
-            <td><%=data.Date%></td>
+            <td><%=data.Date.slice(0, 10).split("-").join("")%></td>
             <td><%=data.Bid%></td>
             <td><%=data.Offer%></td>
           </tr>
         <%})%>
       </tbody>
-      <%})%>
     </table>
-</section>
-<audio controls autoplay>
-  <source src="/public/audio/notif.mp3" type="audio/mpeg">
+  </section>
+  <%})%>
+<audio hidden controls autoplay>
+  <source src="/audio/notif.mp3" type="audio/mpeg" />
   Your browser does not support the audio element.
 </audio>
 <%}%>
